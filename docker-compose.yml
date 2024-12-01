@@ -1,0 +1,64 @@
+version: "3.8"
+# networks:
+#   etl_dev:
+#     external: true
+services:
+  # Postgres service
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: todo_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/ubuntu/pg-data:/var/lib/postgresql/data/:rw
+    networks:
+      - web
+
+  # backend service
+  todo-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+
+      - DB_HOST=postgres
+      - DB_PORT=5432
+
+      - DB_TYPE=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=todo_db
+    image: todo-backend
+    container_name: todo-backend
+    depends_on:
+      - postgres
+    networks:
+      - web
+
+  # frontend service
+  todo-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:3000
+    restart: always
+    ports:
+      - "8080:8080"
+    image: todo-frontend
+    container_name: todo-frontend
+    depends_on:
+      - todo-backend
+    networks:
+      - web
+networks:
+  web:
