@@ -1,6 +1,6 @@
 # Containerized ToDo List Application
 
-A simple Todo application built with React, Node.js (v22.11.0), and MongoDB. This app allows users to manage tasks across different categories with authentication and user-specific data management.
+A simple Todo application built with React, Node.js (v22.11.0), and PostgreSql. This app allows users to manage tasks across different categories with authentication and user-specific data management.
 
 ---
 
@@ -98,13 +98,30 @@ mern-todo-list-application/
 ### Docker Deployment
 
 1. **Docker**:
-   Ensure Docker and Docker Compose are installed on your machine.
+   Ensure Docker and Docker Compose, and PostgreSql are installed on your machine.
 
-2. **Clone the repository**:
+2. **Run Via Docker Image**:
 
    ```bash
-   git clone https://github.com/MohaiminulEraj/Containerized-To-Do-App.git
-   cd Containerized-To-Do-App
+   # Pull the official PostgreSQL image
+   docker pull postgres:latest
+
+   # Pull the official PostgreSQL image
+   docker run -d \
+      --name postgres-container \
+      -e POSTGRES_PASSWORD=postgres \
+      -e POSTGRES_DB=your_database_name \
+      -p 5432:5432 \
+      -v postgres-data:/var/lib/postgresql/data \
+      postgres:latest
+
+   # Pull and Run Todo Backend
+   docker pull mohaiminuleraj/todo-backend:1.0
+   docker run -p 3000:3000 mohaiminuleraj/todo-backend:1.0
+
+   # Pull and Run Todo Frontend
+   docker pull mohaiminuleraj/todo-frontend:1.0
+   docker run -p 8080:8080 mohaiminuleraj/todo-frontend:1.0
    ```
 
 3. **Build and run the application**:
