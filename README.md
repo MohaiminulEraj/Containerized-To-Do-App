@@ -1,6 +1,6 @@
 # Containerized ToDo List Application
 
-A simple Todo application built with React, Node.js (v22.11.0), and PostgreSql. This app allows users to manage tasks across different categories with authentication and user-specific data management.
+A simple Todo application built with React, Node.js (v22.11.0), and PostgreSql and Pulumi (for Infrastructure). This app allows users to manage tasks across different categories with authentication and user-specific data management.
 
 ---
 
@@ -43,6 +43,22 @@ A simple Todo application built with React, Node.js (v22.11.0), and PostgreSql. 
 - Schemas for todos, and users.
 - User-specific todos.
 - Secure storage of sensitive user data.
+
+### Infrastructure
+
+- Pulumi scripts for managing AWS infrastructure
+- AWS
+- VPC Configuration
+- Security Groups
+- Launch Templates
+- Auto Scaling
+- Application Load Balancer
+- Elastic IPs
+- NAT Gateways
+- Route Tables
+- Subnets
+- Docker and Nginx Setup
+- EC2 Instances Configuration
 
 ---
 
@@ -87,6 +103,10 @@ mern-todo-list-application/
 │   └── package.json
 │   └── yarn.lock
 │
+├── infra/
+|   ├── index.ts
+|   ├── pulumi.*
+│   └── package.json
 ├── docker-compose.yml        # Compose file for running the app
 └── README.md                 # Project documentation
 ```
@@ -147,9 +167,11 @@ mern-todo-list-application/
 
 1. **Install prerequisites**:
 
-   - Node.js (v22.11.0)
+   - Node.js and npm Installed (v22.11.0)
    - Yarn (v1.22.22)
    - PostgreSql
+   - AWS credentials configured
+   - Pulumi CLI installed
 
 2. **Clone the repository**:
 
@@ -176,6 +198,19 @@ mern-todo-list-application/
      yarn build
      yarn dev
      ```
+   - **Infrastructure**:
+     ```bash
+     cd infra
+     npm install
+     pulumi config set aws:region ap-southeast-1
+     pulumi up
+     pulumi destroy # (Destroy the infrastructure when no longer needed)
+     yarn dev
+     ```
+
+## Infrastructure Design
+
+![Infrastructure Design](infra/Infrastructure-Design.png)
 
 5. **Access the application**:
 
